@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Topper Ki Tayari - PRO Admin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box; font-family:'Space Grotesk', sans-serif}
+body{margin:0; background:#0a0a14; color:white; padding:20px}
+.card{max-width:1100px; width:100%; margin:0 auto; background:#15152b; border:1px solid #2a2a50; border-radius:18px; padding:24px}
+h2{background:linear-gradient(90deg, #00f2ff, #7a5cff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin:0 0 10px}
+input,textarea,select{width:100%; background:#0e0e22; border:1px solid #2a2a50; color:white; padding:12px; border-radius:10px; outline:none; margin-bottom:6px}
+label{font-size:11px; color:#8a8aa3; text-transform:uppercase; display:block; margin:12px 0 4px}
+.btn{width:100%; padding:13px; border-radius:12px; border:none; font-weight:800; cursor:pointer; margin-top:12px}
+.btn-primary{background:linear-gradient(90deg, #00f2ff, #7a5cff); color:#000}
+.btn-secondary{background:#232345; color:#aab; border:1px dashed #3a3a6a}
+.tab{padding:10px 18px; border-radius:20px; background:#1a1a32; border:1px solid #2a2a50; color:#8a8aa3; cursor:pointer; font-weight:700; font-size:13px}
+.tab.active{background:linear-gradient(90deg, #00f2ff, #7a5cff); color:#000}
+.stat{ background:#0e0e22; border:1px solid #2a2a50; border-radius:14px; padding:16px; text-align:center}
+.q-box{background:#0e0e22; border:1px solid #2a2a50; border-radius:12px; padding:14px; margin-top:12px; display:flex; justify-content:space-between; align-items:center}
+.hidden{display:none}
+table{width:100%; border-collapse:collapse; margin-top:12px}
+th,td{padding:12px; text-align:left; border-bottom:1px solid #1a1a30; font-size:13px}
+th{color:#8a8aa3; font-size:11px; text-transform:uppercase}
+.ban{ background:#ff323215; border:1px solid #ff323455; color:#ff6b6b; padding:6px 12px; border-radius:20px; cursor:pointer; font-size:12px; font-weight:700}
+.edit{ background:#00f2ff15; border:1px solid #00f2ff44; color:#00f2ff; padding:6px 12px; border-radius:20px; cursor:pointer; font-size:12px; font-weight:700}
+</style>
+</head>
+<body>
+
+<div id="loginBox" class="card" style="text-align:center; padding:40px 24px">
+  <h2>PRO ADMIN PANEL</h2>
+  <p style="color:#8a8aa3">Only <b style="color:#00f2ff">edit68ms@gmail.com</b></p>
+  <button class="btn btn-primary" onclick="adminLogin()">🔐 LOGIN WITH GOOGLE</button>
+  <p id="msg" style="color:#ff6b6b; margin-top:14px"></p>
+</div>
+
+<div id="mainAdmin" class="card" style="display:none">
+  <div style="display:flex; justify-content:space-between; align-items:center">
+    <h2>TOPPER KI TAYARI // PRO</h2>
+    <button onclick="logout()" style="background:#ff323215; border:1px solid #ff323455; color:#ff6b6b; padding:6px 14px; border-radius:20px; cursor:pointer">LOGOUT</button>
+  </div>
+  <p id="adminEmail" style="color:#00f2ff; font-size:13px"></p>
+
+  <div style="display:flex; gap:8px; margin:18px 0; flex-wrap:wrap">
+    <button class="tab active" id="t-dashboard" onclick="showTab('dashboard')">📊 Dashboard</button>
+    <button class="tab" id="t-students" onclick="showTab('students')">👥 Students</button>
+    <button class="tab" id="t-manage" onclick="showTab('manage')">📝 Manage</button>
+    <button class="tab" id="t-add" onclick="showTab('add')">➕ Add New</button>
+    <button class="tab" id="t-earning" onclick="showTab('earning')">💰 Earnings</button>
+  </div>
+
+  <div id="tab-dashboard">
+    <h4 style="color:#00f2ff; margin-bottom:12px">👥 VISITORS STATUS</h4>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(130px,1fr)); gap:10px">
+      <div class="stat" style="border-color:#00ff8855;"><div style="color:#00ff88; font-size:11px">🟢 LIVE NOW</div><h1 id="liveNow" style="color:#00ff88">0</h1></div>
+      <div class="stat" style="border-color:#00f2ff55"><div style="color:#00f2ff; font-size:11px">📅 TODAY</div><h1 id="todayVisitors">0</h1><div style="font-size:9px; color:#6a6a8a" id="todayDate"></div></div>
+      <div class="stat"><div style="color:#ffcc00; font-size:11px">📆 THIS MONTH</div><h1 id="monthVisitors">0</h1><div style="font-size:9px; color:#6a6a8a" id="monthLabel"></div></div>
+      <div class="stat"><div style="color:#ff6ac1; font-size:11px">📅 THIS YEAR</div><h1 id="yearVisitors">0</h1><div style="font-size:9px; color:#6a6a8a" id="yearLabel"></div></div>
+      <div class="stat"><div style="color:#8a8aa3; font-size:11px">🌍 TOTAL</div><h1 id="totalVisitors">0</h1></div>
+      <div class="stat"><div style="color:#8a8aa3; font-size:11px">👤 UNIQUE</div><h1 id="uniqueUsers">0</h1></div>
+    </div>
+    <h4 style="color:#00f2ff; margin:20px 0 12px">📚 CONTENT STATUS</h4>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(120px,1fr)); gap:10px">
+      <div class="stat"><div style="font-size:11px; color:#8a8aa3">TOTAL CONTENT</div><h1 id="totalContent">0</h1></div>
+      <div class="stat"><div style="font-size:11px; color:#8a8aa3">TESTS TAKEN</div><h1 id="totalTests">0</h1></div>
+      <div class="stat"><div style="font-size:11px; color:#8a8aa3">CLASS 9</div><h1 id="c9">0</h1></div>
+      <div class="stat"><div style="font-size:11px; color:#8a8aa3">CLASS 10</div><h1 id="c10">0</h1></div>
+      <div class="stat"><div style="font-size:11px; color:#8a8aa3">CLASS 11</div><h1 id="c11">0</h1></div>
+      <div class="stat"><div style="font-size:11px; color:#8a8aa3">CLASS 12</div><h1 id="c12">0</h1></div>
+    </div>
+  </div>
+
+  <!-- NEW STUDENTS TAB -->
+  <div id="tab-students" class="hidden">
+    <div style="display:flex; justify-content:space-between; align-items:center">
+      <h3>👥 All Registered Students <span id="studentCount" style="background:#00f2ff; color:#000; padding:2px 10px; border-radius:20px; font-size:12px">0</span></h3>
+      <input id="searchStudent" placeholder="Search name, email, school..." onkeyup="searchStudents()" style="max-width:220px">
+    </div>
+    <div style="overflow:auto; margin-top:14px; background:#0e0e22; border:1px solid #2a2a50; border-radius:12px">
+      <table id="studentsTable">
+        <thead><tr><th>Name</th><th>Class</th><th>Email</th><th>School</th><th>Phone</th><th>Goal</th><th>Action</th></tr></thead>
+        <tbody id="studentsBody"><tr><td colspan="7" style="text-align:center; color:#6a6a8a; padding:20px">Loading students...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="tab-manage" class="hidden">
+    <select id="filterClass" onchange="loadAllContent()"><option value="all">All Classes</option><option value="9">Class 9</option><option value="10">Class 10</option><option value="11">Class 11</option><option value="12">Class 12</option></select>
+    <div id="manageList" style="margin-top:10px">Loading...</div>
+  </div>
+
+  <div id="tab-add" class="hidden">
+    <label>Select Class *</label><select id="contentClass"><option value="9">Class 9</option><option value="10">Class 10</option><option value="11">Class 11</option><option value="12">Class 12</option></select>
+    <label>Content Type</label><select id="contentType"><option value="mock">⚡ Mock Test</option><option value="longqa">📝 Long Q&A</option><option value="article">📄 Article</option></select>
+    <label>Title</label><input id="title" placeholder="Ex: Bengali Ch 1 Q&A">
+    <label>Thumbnail URL</label><input id="thumb" placeholder="https://...">
+    <div id="mockArea"><div id="qArea"></div><button class="btn btn-secondary" onclick="addQ()">+ ADD QUESTION</button><label>Time (Minutes)</label><input id="testTime" type="number" value="30"></div>
+    <div id="articleArea" class="hidden"><label>Full Content</label><textarea id="articleContent" rows="10"></textarea></div>
+    <button class="btn btn-primary" onclick="publish()">🚀 PUBLISH</button>
+    <p id="status" style="text-align:center; color:#00ff88; margin-top:14px"></p>
+  </div>
+
+  <div id="tab-earning" class="hidden">
+    <h3>💰 Earnings</h3>
+    <div style="background:#0e0e22; border:1px dashed #7a5cff55; border-radius:12px; padding:16px; margin-top:12px">
+      <p style="color:#8a8aa3; font-size:13px">AdSense: <b style="color:#ffcc00">Not Connected</b></p>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:16px">
+        <div class="stat"><div style="font-size:11px">TODAY</div><h2>$0.00</h2></div>
+        <div class="stat"><div style="font-size:11px">MONTH</div><h2>$0.00</h2></div>
+        <div class="stat"><div style="font-size:11px">CLICKS</div><h2>0</h2></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT STUDENT MODAL -->
+<div id="editStudentModal" style="display:none; position:fixed; inset:0; background:#0a0a14ee; backdrop-filter:blur(10px); z-index:100; align-items:center; justify-content:center; padding:20px">
+  <div style="max-width:400px; width:100%; background:#15152b; border:1px solid #2a2a50; border-radius:16px; padding:20px">
+    <div style="display:flex; justify-content:space-between"><h3 style="color:#00f2ff">Edit Student</h3><button onclick="closeEditModal()" style="background:#232345; border:none; color:white; width:28px; height:28px; border-radius:50%; cursor:pointer">✕</button></div>
+    <label>Name</label><input id="edit_name">
+    <label>Class</label><select id="edit_class"><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select>
+    <label>School</label><input id="edit_school">
+    <label>Phone</label><input id="edit_phone">
+    <label>Goal</label><input id="edit_goal">
+    <label>Email</label><input id="edit_email" disabled style="opacity:.6">
+    <input type="hidden" id="edit_id">
+    <button class="btn btn-primary" onclick="updateStudent()">💾 UPDATE</button>
+    <p id="editMsg" style="text-align:center; font-size:12px; margin-top:8px"></p>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import { getFirestore, collection, getDocs, addDoc, deleteDoc, doc, query, orderBy, limit, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+const firebaseConfig = { apiKey: "AIzaSyChCJxtVlunBF8y6ZJtNFAR_tNlSt6-0Lo", authDomain: "topper-ki-tayari.firebaseapp.com", projectId: "topper-ki-tayari", storageBucket: "topper-ki-tayari.firebasestorage.app", messagingSenderId: "1011695141399", appId: "1:1011695141399:web:1049d00fbafd5714b6d252" };
+const app = initializeApp(firebaseConfig); const db = getFirestore(app); const auth = getAuth(app); const provider = new GoogleAuthProvider(); const ADMIN_EMAIL = "edit68ms@gmail.com"; let qCount=0; let editingId=null; let allStudents=[];
+window.adminLogin=async()=>{ try{ await signInWithPopup(auth, provider);}catch(e){ document.getElementById('msg').innerText=e.message; } };
+window.logout=async()=>{ await signOut(auth); location.reload(); };
+onAuthStateChanged(auth, (user)=>{ if(user && user.email===ADMIN_EMAIL){ document.getElementById('loginBox').style.display='none'; document.getElementById('mainAdmin').style.display='block'; document.getElementById('adminEmail').innerText="✅ "+user.email; loadDashboard(); loadAllContent(); loadStudents(); } else if(user){ document.getElementById('msg').innerText="Access denied! "+user.email; signOut(auth); } });
+window.showTab=function(t){ document.querySelectorAll('[id^=tab-]').forEach(el=>el.classList.add('hidden')); document.getElementById('tab-'+t).classList.remove('hidden'); document.querySelectorAll('.tab').forEach(el=>el.classList.remove('active')); document.getElementById('t-'+t).classList.add('active'); if(t==='manage') loadAllContent(); if(t==='dashboard') loadDashboard(); if(t==='students') loadStudents(); };
+document.getElementById('contentType').addEventListener('change', (e)=>{ if(e.target.value==='mock'){ document.getElementById('mockArea').classList.remove('hidden'); document.getElementById('articleArea').classList.add('hidden'); } else { document.getElementById('mockArea').classList.add('hidden'); document.getElementById('articleArea').classList.remove('hidden'); } });
+window.addQ=function(){ qCount++; let div=document.createElement('div'); div.className='q-box'; div.style.flexDirection='column'; div.style.alignItems='stretch'; div.innerHTML=`<div style="display:flex; justify-content:space-between"><b style="color:#00f2ff">Q ${qCount}</b><button onclick="this.parentElement.parentElement.remove()" style="background:#ff323215; border:1px solid #ff323455; color:#ff6b6b; border-radius:20px; padding:2px 8px">✕</button></div><textarea id="q${qCount}" placeholder="Question"></textarea><input id="q${qCount}A" placeholder="Option A"><input id="q${qCount}B" placeholder="Option B"><input id="q${qCount}C" placeholder="Option C"><input id="q${qCount}D" placeholder="Option D"><select id="q${qCount}Ans"><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option></select>`; document.getElementById('qArea').appendChild(div); };
+window.loadAllContent=async function(){ const snap=await getDocs(collection(db,"contents")); let filter=document.getElementById('filterClass').value; let html=""; snap.forEach(docSnap=>{ let d=docSnap.data(); if(filter!=='all' && d.class!=filter) return; html+=`<div class="q-box"><div><b style="color:#00f2ff">Class ${d.class||'9'} • ${d.type}</b><br><span style="font-size:13px">${d.title}</span></div><div style="display:flex; gap:6px"><button onclick="editContent('${docSnap.id}')" style="background:#00f2ff; color:#000; border:none; padding:8px 14px; border-radius:8px; cursor:pointer; font-weight:700">✏️</button><button onclick="deleteContent('${docSnap.id}')" style="background:#ff3232; color:white; border:none; padding:8px 14px; border-radius:8px; cursor:pointer">🗑️</button></div></div>`; }); document.getElementById('manageList').innerHTML=html||"<p style='color:#6a6a8a'>No content</p>"; };
+window.deleteContent=async function(id){ if(!confirm("Delete?")) return; await deleteDoc(doc(db,"contents",id)); loadAllContent(); loadDashboard(); };
+window.editContent=async function(id){ const snap = await getDoc(doc(db,"contents",id)); if(!snap.exists()) return alert("Not found"); let d = snap.data(); showTab('add'); editingId = id; document.getElementById('contentClass').value = d.class || '9'; document.getElementById('contentType').value = d.type; document.getElementById('title').value = d.title; document.getElementById('thumb').value = d.thumb || ''; if(d.type === 'mock'){ document.getElementById('mockArea').classList.remove('hidden'); document.getElementById('articleArea').classList.add('hidden'); document.getElementById('qArea').innerHTML = ''; qCount = 0; d.questions.forEach(q=>{ qCount++; let div=document.createElement('div'); div.className='q-box'; div.style.flexDirection='column'; div.style.alignItems='stretch'; div.innerHTML=`<div style="display:flex; justify-content:space-between"><b style="color:#00f2ff">Q ${qCount}</b><button onclick="this.parentElement.parentElement.remove()" style="background:#ff323215; border:1px solid #ff323455; color:#ff6b6b; border-radius:20px; padding:2px 8px">✕</button></div><textarea id="q${qCount}">${q.question}</textarea><input id="q${qCount}A" value="${q.A}"><input id="q${qCount}B" value="${q.B}"><input id="q${qCount}C" value="${q.C}"><input id="q${qCount}D" value="${q.D}"><select id="q${qCount}Ans"><option value="A" ${q.ans=='A'?'selected':''}>A</option><option value="B" ${q.ans=='B'?'selected':''}>B</option><option value="C" ${q.ans=='C'?'selected':''}>C</option><option value="D" ${q.ans=='D'?'selected':''}>D</option></select>`; document.getElementById('qArea').appendChild(div); }); document.getElementById('testTime').value = d.time || 30; } else { document.getElementById('mockArea').classList.add('hidden'); document.getElementById('articleArea').classList.remove('hidden'); document.getElementById('articleContent').value = d.content || ''; } document.getElementById('status').innerText = `✏️ EDITING: ${d.title}`; };
+window.publish=async function(){ let type=document.getElementById('contentType').value; let title=document.getElementById('title').value; let classLevel=document.getElementById('contentClass').value; if(!title){ alert("Add Title"); return; } let data={type, title, class:classLevel, thumb:document.getElementById('thumb').value, createdAt:new Date()}; if(type==='mock'){ let qs=[]; for(let i=1;i<=qCount;i++){ let el=document.getElementById(`q${i}`); if(!el||!el.value) continue; qs.push({question:el.value, A:document.getElementById(`q${i}A`).value, B:document.getElementById(`q${i}B`).value, C:document.getElementById(`q${i}C`).value, D:document.getElementById(`q${i}D`).value, ans:document.getElementById(`q${i}Ans`).value}); } if(qs.length===0){ alert("Add question"); return; } data.questions=qs; data.time=document.getElementById('testTime').value; } else { data.content=document.getElementById('articleContent').value; } document.getElementById('status').innerText="⏳ Saving..."; try{ if(editingId){ await updateDoc(doc(db,"contents",editingId), data); document.getElementById('status').innerText=`✅ UPDATED!`; editingId=null; } else { await addDoc(collection(db,"contents"),data); document.getElementById('status').innerText=`✅ Published for Class ${classLevel}!`; } loadDashboard(); loadAllContent(); }catch(e){ document.getElementById('status').innerText="❌ "+e.message; } };
+
+window.loadDashboard=async function(){ 
+  const cSnap=await getDocs(collection(db,"contents")); 
+  const rSnap=await getDocs(query(collection(db,"results"), orderBy("date","desc"), limit(10)));
+  let oSnap; try{ oSnap=await getDocs(collection(db,"online_users")); }catch(e){ oSnap={size:0, forEach:()=>{}} }
+  document.getElementById('totalContent').innerText=cSnap.size; 
+  document.getElementById('totalTests').innerText=rSnap.size; 
+  let c9=0,c10=0,c11=0,c12=0; 
+  cSnap.forEach(d=>{ let cl=d.data().class; if(cl=='9') c9++; if(cl=='10') c10++; if(cl=='11') c11++; if(cl=='12') c12++; }); 
+  document.getElementById('c9').innerText=c9; document.getElementById('c10').innerText=c10; document.getElementById('c11').innerText=c11; document.getElementById('c12').innerText=c12;
+  let now=new Date(); let liveNow=0, todayV=0, monthV=0, yearV=0; let uniqueSet = new Set();
+  oSnap.forEach(docu=>{ let da=docu.data(); let ls=da.lastSeen?.toDate?da.lastSeen.toDate():new Date(da.lastSeen); if(!ls || isNaN(ls)) return; let diff=(now-ls)/(1000*60); if(diff<3) liveNow++; if(ls.toDateString()===now.toDateString()) todayV++; if(ls.getMonth()===now.getMonth() && ls.getFullYear()===now.getFullYear()) monthV++; if(ls.getFullYear()===now.getFullYear()) yearV++; if(da.visitorId) uniqueSet.add(da.visitorId); });
+  document.getElementById('liveNow').innerText=liveNow; document.getElementById('todayVisitors').innerText=todayV; document.getElementById('monthVisitors').innerText=monthV; document.getElementById('yearVisitors').innerText=yearV; document.getElementById('totalVisitors').innerText=oSnap.size; document.getElementById('uniqueUsers').innerText=uniqueSet.size;
+  document.getElementById('todayDate').innerText=now.toLocaleDateString(); document.getElementById('monthLabel').innerText=now.toLocaleString('default',{month:'long'}); document.getElementById('yearLabel').innerText=now.getFullYear();
+};
+
+// ===== STUDENT MANAGEMENT - BAN SYSTEM =====
+window.loadStudents=async function(){
+  try{
+    const snap=await getDocs(collection(db,"student_profiles"));
+    allStudents=[];
+    snap.forEach(d=>{ allStudents.push({id:d.id,...d.data()}); });
+    document.getElementById('studentCount').innerText=allStudents.length;
+    renderStudents(allStudents);
+  }catch(e){ document.getElementById('studentsBody').innerHTML=`<tr><td colspan="7" style="color:#ff6b6b">Error: ${e.message}</td></tr>`; }
+}
+function renderStudents(list){
+  if(list.length===0){ document.getElementById('studentsBody').innerHTML=`<tr><td colspan="7" style="text-align:center; color:#6a6a8a; padding:20px">No students yet</td></tr>`; return; }
+  let html="";
+  list.forEach(s=>{
+    let isBanned = s.banned === true;
+    html+=`<tr style="${isBanned? 'background:#ff323211; opacity:0.8' : ''}">
+      <td><b style="color:${isBanned? '#ff6b6b' : '#00f2ff'}">${s.name||'N/A'} ${isBanned? '🚫' : ''}</b></td>
+      <td><span style="background:#232345; padding:2px 8px; border-radius:10px">${s.class||''}</span></td>
+      <td style="font-size:11px; color:#8a8aa3">${s.email||''}</td>
+      <td>${s.school||''}</td>
+      <td style="color:${isBanned? '#ff6b6b' : '#00ff88'}">${s.phone||''}</td>
+      <td>${isBanned? '<b style="color:#ff6b6b">BANNED</b>' : (s.goal||'')}</td>
+      <td><div style="display:flex; gap:6px">
+        <button class="edit" onclick="openEditStudent('${s.id}')">✏️ Edit</button>
+        ${isBanned? `<button onclick="unbanStudent('${s.id}', '${s.name}')" style="background:#00ff8815; border:1px solid #00ff8844; color:#00ff88; padding:6px 12px; border-radius:20px; cursor:pointer; font-size:12px; font-weight:700">✅ UNBAN</button>` : `<button class="ban" onclick="banStudent('${s.id}', '${s.name}')">🚫 BAN</button>`}
+      </div></td>
+    </tr>`;
+  });
+  document.getElementById('studentsBody').innerHTML=html;
+}
+window.searchStudents=function(){
+  let q=document.getElementById('searchStudent').value.toLowerCase();
+  let filtered=allStudents.filter(s=> (s.name||'').toLowerCase().includes(q) || (s.email||'').toLowerCase().includes(q) || (s.school||'').toLowerCase().includes(q));
+  renderStudents(filtered);
+}
+window.openEditStudent=function(id){
+  let s=allStudents.find(x=>x.id===id);
+  if(!s) return;
+  document.getElementById('edit_id').value=s.id;
+  document.getElementById('edit_name').value=s.name||'';
+  document.getElementById('edit_class').value=s.class||'9';
+  document.getElementById('edit_school').value=s.school||'';
+  document.getElementById('edit_phone').value=s.phone||'';
+  document.getElementById('edit_goal').value=s.goal||'';
+  document.getElementById('edit_email').value=s.email||'';
+  document.getElementById('editStudentModal').style.display='flex';
+}
+window.closeEditModal=()=>{ document.getElementById('editStudentModal').style.display='none'; }
+window.updateStudent=async function(){
+  let id=document.getElementById('edit_id').value;
+  let data={ name:document.getElementById('edit_name').value, class:document.getElementById('edit_class').value, school:document.getElementById('edit_school').value, phone:document.getElementById('edit_phone').value, goal:document.getElementById('edit_goal').value, updatedAt:new Date() };
+  document.getElementById('editMsg').innerText="⏳ Updating...";
+  try{ await updateDoc(doc(db, "student_profiles", id), data); document.getElementById('editMsg').innerText="✅ Updated!"; loadStudents(); setTimeout(closeEditModal, 800); }catch(e){ document.getElementById('editMsg').innerText="❌ "+e.message; }
+}
+window.banStudent=async function(id, name){
+  let reason = prompt(`BAN ${name} - Enter reason:`, "Suspicious activity");
+  if(reason === null) return;
+  if(!confirm(`BAN ${name} permanently?\nThey will see "YOU ARE BANNED" on login.`)) return;
+  try{
+    await updateDoc(doc(db, "student_profiles", id), { banned: true, bannedReason: reason, bannedAt: new Date(), bannedBy: "admin" });
+    await addDoc(collection(db, "banned_users"), {email: allStudents.find(s=>s.id===id)?.email, userId: allStudents.find(s=>s.id===id)?.userId, name:name, reason:reason, bannedAt: new Date()});
+    alert("🚫 BANNED: "+name);
+    loadStudents();
+  }catch(e){ alert("❌ "+e.message); }
+}
+window.unbanStudent=async function(id, name){
+  if(!confirm(`UNBAN ${name}? They can login again.`)) return;
+  try{
+    await updateDoc(doc(db, "student_profiles", id), { banned: false, unbannedAt: new Date() });
+    alert("✅ UNBANNED: "+name);
+    loadStudents();
+  }catch(e){ alert("❌ "+e.message); }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topper Ki Tayari - Class 9 Universe</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box; margin:0; padding:0}
+body{font-family:'Inter', sans-serif; background:#080810; color:white; display:flex; min-height:100vh; overflow:hidden}
+h1,h2,h3{font-family:'Space Grotesk', sans-serif}
+.sidebar{width:280px; height:100vh; position:fixed; left:0; top:0; background:linear-gradient(180deg, #121228f2, #0e0e22f2); backdrop-filter:blur(24px); border-right:1px solid #2a2a50; padding:18px 14px; display:flex; flex-direction:column; z-index:50}
+.side-top{display:flex; align-items:center; gap:10px; padding:8px 6px 20px}
+.side-logo-icon{width:40px; height:40px; border-radius:12px; background:linear-gradient(135deg, #00f2ff, #7a5cff); display:flex; align-items:center; justify-content:center; font-weight:800}
+.side-logo-text{font-weight:800; font-size:16px}
+.side-logo-text span{display:block; font-size:10px; color:#8a8aa3; letter-spacing:1.5px}
+.side-menu{display:flex; flex-direction:column; gap:8px; margin-top:10px}
+.menu-item{padding:12px 14px; border-radius:12px; display:flex; gap:10px; align-items:center; cursor:pointer; color:#8a8aa3; border:1px solid transparent; transition:.3s}
+.menu-item:hover{background:#1a1a32; color:white; transform:translateX(4px)}
+.menu-item.active{background:#1d1d3a; border-color:#7a5cff55; color:white; box-shadow:inset 3px 0 0 #7a5cff}
+.icon{width:34px; height:34px; border-radius:10px; background:#0e0e22; display:flex; align-items:center; justify-content:center}
+.side-bottom{margin-top:auto; padding:12px; background:linear-gradient(180deg, #1a1a32, #15152b); border:1px solid #2a2a50; border-radius:14px; display:flex; align-items:center; gap:10px; cursor:pointer; transition:.3s}
+.side-bottom:hover{border-color:#7a5cff77; transform:translateY(-2px)}
+.avatar{width:36px; height:36px; border-radius:10px; background:linear-gradient(135deg, #00f2ff, #7a5cff); display:flex; align-items:center; justify-content:center; font-weight:800}
+.dot{width:10px; height:10px; border-radius:50%; background:#00ff88; margin-left:auto}
+.main-wrap{margin-left:280px; flex:1; height:100vh; overflow-y:auto}
+.main{padding:20px 24px 40px; max-width:1300px}
+.topbar{display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; position:sticky; top:0; z-index:20; background:#080810cc; backdrop-filter:blur(20px); padding:14px 24px; margin:-20px -24px 16px; border-bottom:1px solid #1a1a30}
+.welcome-pill{padding:7px 14px; border-radius:20px; background:#1a1a32; border:1px solid #2a2a50; font-size:11px; color:#8a8aa3}
+.login-top{padding:9px 20px; border-radius:24px; border:1px solid #2a2a50; background:#15152b; color:white; cursor:pointer; font-weight:700}
+.login-top.logged{background:linear-gradient(90deg, #00f2ff, #7a5cff); color:#000}
+.hero-title{font-size:clamp(32px, 4.5vw, 46px); font-weight:800; margin:8px 0}
+.hero-title span{background:linear-gradient(90deg, #8b5cf6, #00f2ff); -webkit-background-clip:text; -webkit-text-fill-color:transparent}
+.hero-sub{color:#8a8aa3; font-size:14px; margin-bottom:24px}
+.stats{display:grid; grid-template-columns:repeat(4, 1fr); gap:14px; margin-bottom:20px}
+.stat-card{background:#1a1a30cc; border:1px solid #2a2a50; border-radius:18px; padding:18px}
+.stat-num{font-size:30px; font-weight:800}
+.weekly{background:#1a1a30cc; border:1px solid #2a2a50; border-radius:18px; padding:20px}
+.week-grid{display:grid; grid-template-columns:repeat(7, 1fr); gap:10px; margin-top:14px}
+.day-box{aspect-ratio:1/1.1; border-radius:12px; background:#1e1e3f; border:1px solid #2a2a50; display:flex; align-items:center; justify-content:center; color:#6a6a8a}
+.day-box.done{background:#1e2a4a; border-color:#00f2ff44; color:#00f2ff}
+.actions{display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; margin-bottom:22px}
+.action-card{background:#1a1a30cc; border:1px solid #2a2a50; border-radius:18px; padding:18px; display:flex; gap:12px; cursor:pointer}
+.section{animation:sectionSlide.5s ease}
+@keyframes sectionSlide{from{opacity:0; transform:translateX(30px)} to{opacity:1; transform:translateX(0)}}
+.hidden{display:none}
+.grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(270px, 1fr)); gap:14px; margin-top:16px}
+.card{background:#15152b; border:1px solid #2a2a50; border-radius:18px; overflow:hidden; cursor:pointer; transition:.3s}
+.card:hover{border-color:#7a5cff66; transform:translateY(-4px)}
+.card-thumb{height:150px; background:#0e0e22; background-size:cover; background-position:center}
+.card-body{padding:14px}
+.card-type{font-size:10px; color:#00f2ff; font-weight:700}
+.card-title{font-weight:700; margin:6px 0 10px}
+.badge-start{padding:6px 12px; border-radius:20px; background:#232345; color:white; font-size:11px}
+#mockView, #articleView, #loginModal, #studentModal{position:fixed; inset:0; background:#0a0a14; z-index:200; overflow-y:auto; padding:20px; display:none}
+#loginModal, #studentModal{background:#0a0a14ee; backdrop-filter:blur(12px); align-items:center; justify-content:center}
+.modal-box{max-width:420px; width:100%; background:#15152b; border:1px solid #2a2a5a; border-radius:20px; padding:24px}
+.modal-box input,.modal-box select{width:100%; background:#0e0e22; border:1px solid #2a2a50; color:white; padding:12px; border-radius:10px; margin:6px 0 12px; outline:none}
+.q-card{background:#15152b; border:1px solid #2a2a50; border-radius:16px; padding:16px; margin-bottom:14px}
+.opt{display:block; width:100%; text-align:left; padding:12px; margin-top:8px; background:#0e0e22; border:1px solid #2a2a50; border-radius:10px; color:white; cursor:pointer}
+.opt.selected{border-color:#00f2ff; background:#00f2ff15}
+@media(max-width:900px){.sidebar{width:100%; height:auto; position:relative}.main-wrap{margin-left:0; height:auto}}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="side-top">
+    <div class="side-logo-icon">⚡</div>
+    <div class="side-logo-text">TOPPER KI TAYARI<span>CLASS 9 • LEARN</span></div>
+  </div>
+  <div class="side-menu">
+    <div class="menu-item active" id="menu-home" onclick="switchTab('home')"><div class="icon">🏠</div><div><b>Home</b><div style="font-size:11px; color:#6a6a8a">Dashboard</div></div></div>
+    <div class="menu-item" id="menu-study" onclick="switchTab('study')"><div class="icon">📚</div><div><b>Study Hub</b><div style="font-size:11px; color:#6a6a8a">Chapters & Q&A</div></div></div>
+    <div class="menu-item" id="menu-leaderboard" onclick="switchTab('leaderboard')"><div class="icon">🏆</div><div><b>Leaderboard</b><div style="font-size:11px; color:#6a6a8a">See your rank</div></div></div>
+  </div>
+  <div class="side-bottom" onclick="openStudentForm()">
+    <div class="avatar" id="avatarLetter">G</div>
+    <div style="flex:1; overflow:hidden"><div id="userName" style="font-weight:700; font-size:13px">Guest User</div><div id="userEmail" style="font-size:11px; color:#8a8aa3">Click to add details ✏️</div><div id="userClassLabel" style="font-size:10px; color:#00f2ff; margin-top:2px"></div></div>
+    <div class="dot" id="onlineDot" style="background:#555"></div>
+  </div>
+</div>
+
+<div class="main-wrap" id="mainWrap">
+  <div class="main">
+    <div class="topbar">
+      <div class="welcome-pill">Welcome back, <span id="welcomeName">student</span></div>
+      <button id="navLoginBtn" class="login-top" onclick="openLogin()"><span>LOGIN</span></button>
+    </div>
+
+    <div id="section-home" class="section">
+      <h1 class="hero-title">Your Learning <span>Universe</span></h1>
+      <p class="hero-sub">Master with interactive mock tests and level up every day.</p>
+      <div class="stats">
+        <div class="stat-card"><div class="stat-num" id="statStreak">1</div><div style="font-size:12px; color:#8a8aa3">Day Streak</div></div>
+        <div class="stat-card"><div class="stat-num" id="statXP">0</div><div style="font-size:12px; color:#8a8aa3">Total XP</div></div>
+        <div class="stat-card"><div class="stat-num" id="statChapters">-</div><div style="font-size:12px; color:#8a8aa3">Chapters</div></div>
+        <div class="stat-card"><div class="stat-num" id="statCards">-</div><div style="font-size:12px; color:#8a8aa3">Study Cards</div></div>
+      </div>
+      <div class="actions">
+        <div class="action-card" onclick="switchTab('study')"><div>📖</div><div><h4>Browse Study Hub</h4><p style="font-size:12px;color:#8a8aa3">Explore Q&As</p></div></div>
+        <div class="action-card" onclick="switchTab('study')"><div>🎯</div><div><h4>Daily Challenge</h4><p style="font-size:12px;color:#8a8aa3">Complete quiz</p></div></div>
+        <div class="action-card" onclick="switchTab('leaderboard')"><div>🏆</div><div><h4>Leaderboard</h4><p style="font-size:12px;color:#8a8aa3">See rank</p></div></div>
+      </div>
+      <div class="weekly">
+        <h4>Weekly Goal</h4><p style="font-size:11px; color:#8a8aa3" id="weeklyText">0 of 7 days</p>
+        <div class="week-grid" id="weekGrid"></div>
+      </div>
+    </div>
+
+    <div id="section-study" class="section hidden">
+      <h1 class="hero-title">Study <span>Hub</span></h1>
+      <div id="classChooser">
+        <p class="hero-sub">First select your class</p>
+        <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(160px, 1fr)); gap:14px; margin-top:20px">
+          <div class="card" onclick="chooseClass('5')" style="padding:20px; text-align:center"><div style="font-size:30px">📗</div><h3>Class 5</h3><span class="badge-start" style="margin-top:8px; display:inline-block">SELECT →</span></div>
+          <div class="card" onclick="chooseClass('6')" style="padding:20px; text-align:center"><div style="font-size:30px">📙</div><h3>Class 6</h3><span class="badge-start" style="margin-top:8px; display:inline-block">SELECT →</span></div>
+          <div class="card" onclick="chooseClass('7')" style="padding:20px; text-align:center"><div style="font-size:30px">📕</div><h3>Class 7</h3><span class="badge-start" style="margin-top:8px; display:inline-block">SELECT →</span></div>
+          <div class="card" onclick="chooseClass('8')" style="padding:20px; text-align:center"><div style="font-size:30px">📕</div><h3>Class 8</h3><span class="badge-start" style="margin-top:8px; display:inline-block">SELECT →</span></div>
+          <div class="card" onclick="chooseClass('9')" style="padding:20px; text-align:center"><div style="font-size:30px">📘</div><h3>Class 9</h3><span class="badge-start" style="margin-top:8px; display:inline-block">SELECT →</span></div>
+          <div class="card" onclick="chooseClass('10')" style="padding:20px; text-align:center"><div style="font-size:30px">📗</div><h3>Class 10</h3><span class="badge-start" style="margin-top:8px; display:inline-block">SELECT →</span></div>
+          <div class="card" onclick="chooseClass('11')" style="padding:20px; text-align:center"><div style="font-size:30px">📙</div><h3>Class 11</h3><span class="badge-start" style="margin-top:8px; display:inline-block">SELECT →</span></div>
+          <div class="card" onclick="chooseClass('12')" style="padding:20px; text-align:center"><div style="font-size:30px">📕</div><h3>Class 12</h3><span class="badge-start" style="margin-top:8px; display:inline-block">SELECT →</span></div>
+        </div>
+      </div>
+      <div id="classContentArea" style="display:none">
+        <div style="background:#15152b; border:1px solid #2a2a50; border-radius:14px; padding:12px 16px; display:flex; justify-content:space-between; align-items:center; margin:16px 0">
+          <span>Showing: <b id="selectedClassLabel2" style="color:#00f2ff">Class 9</b></span>
+          <button onclick="backToClassChooser()" style="padding:6px 14px; border-radius:20px; background:#232345; border:1px solid #3a3a6a; color:white; cursor:pointer; font-size:12px">← Change Class</button>
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap">
+          <button class="login-top" onclick="filterContent('all')">ALL</button>
+          <button class="login-top" onclick="filterContent('mock')">⚡ TESTS</button>
+          <button class="login-top" onclick="filterContent('longqa')">📝 Q&A</button>
+          <button class="login-top" onclick="filterContent('article')">📄 ARTICLES</button>
+        </div>
+        <div class="grid" id="contentGrid"></div>
+      </div>
+    </div>
+
+    <div id="section-leaderboard" class="section hidden">
+      <h1 class="hero-title">Leader<span>board</span></h1>
+      <p class="hero-sub">Top scorers this week</p>
+      <div id="leaderboardList" style="background:#15152b; border:1px solid #2a2a50; border-radius:16px; padding:10px; margin-top:20px">Loading...</div>
+    </div>
+  </div>
+</div>
+
+<div id="loginModal"><div class="modal-box"><div style="display:flex; justify-content:space-between"><h2 style="color:#00f2ff">LOGIN</h2><button onclick="closeLogin()" style="background:#232345; border:none; color:white; width:30px; height:30px; border-radius:50%; cursor:pointer">✕</button></div><input id="email" type="email" placeholder="Email"><input id="password" type="password" placeholder="Password"><button onclick="emailLogin()" style="width:100%; margin-top:12px; padding:12px; border-radius:10px; border:none; background:linear-gradient(90deg, #00f2ff, #7a5cff); font-weight:800; cursor:pointer">LOGIN / SIGNUP</button><button onclick="googleLogin()" style="width:100%; margin-top:10px; padding:12px; border-radius:10px; background:#0e0e22; border:1px solid #2a2a50; color:white; cursor:pointer">Google</button><p id="loginMsg" style="color:#ff6b6b; font-size:12px; margin-top:10px"></p></div></div>
+
+<div id="studentModal">
+  <div class="modal-box">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px">
+      <h2 style="color:#00f2ff">Student Details</h2>
+      <button onclick="closeStudentForm()" style="background:#232345; border:none; color:white; width:30px; height:30px; border-radius:50%; cursor:pointer">✕</button>
+    </div>
+    <p style="color:#8a8aa3; font-size:12px; margin-bottom:12px">Click save - admin can see your details</p>
+    <label style="font-size:11px; color:#8a8aa3">FULL NAME *</label><input id="st_name" placeholder="Rahul Sharma">
+    <label style="font-size:11px; color:#8a8aa3">CLASS *</label><select id="st_class"><option value="5">Class 5</option><option value="6">Class 6</option><option value="7">Class 7</option><option value="8">Class 8</option><option value="9" selected>Class 9</option><option value="10">Class 10</option><option value="11">Class 11</option><option value="12">Class 12</option></select>
+    <label style="font-size:11px; color:#8a8aa3">SCHOOL NAME</label><input id="st_school" placeholder="Siliguri High School">
+    <label style="font-size:11px; color:#8a8aa3">PHONE / WHATSAPP</label><input id="st_phone" placeholder="98xxxxxx10">
+    <label style="font-size:11px; color:#8a8aa3">GOAL</label><input id="st_goal" placeholder="Want 90% in Madhyamik">
+    <button onclick="saveStudentDetails()" style="width:100%; padding:13px; border-radius:12px; border:none; background:linear-gradient(90deg, #00f2ff, #7a5cff); color:#000; font-weight:800; cursor:pointer; margin-top:8px">💾 SAVE DETAILS</button>
+    <p id="st_msg" style="text-align:center; font-size:12px; margin-top:10px; color:#00ff88"></p>
+  </div>
+</div>
+
+<div id="mockView"><button onclick="closeMock()" style="padding:10px 18px; border-radius:20px; background:#232345; border:1px solid #3a3a6a; color:white; cursor:pointer">← BACK</button><h2 id="mockTitle" style="margin:20px 0 10px"></h2><p id="mockTimer" style="color:#00f2ff; font-weight:700"></p><div id="mockQuestions" style="margin-top:20px; max-width:700px"></div><button onclick="submitMock()" style="width:100%; max-width:700px; margin-top:20px; padding:16px; border-radius:14px; border:none; background:linear-gradient(90deg, #00f2ff, #7a5cff); color:#000; font-weight:800; font-size:16px; cursor:pointer">SUBMIT TEST 🚀</button><div id="resultBox" style="display:none; max-width:700px; margin-top:20px; background:#15152b; border:1px solid #2a2a50; border-radius:16px; padding:20px"></div></div>
+<div id="articleView"><div style="max-width:800px; margin:0 auto"><button onclick="document.getElementById('articleView').style.display='none'" style="padding:10px 18px; border-radius:20px; background:#232345; border:1px solid #3a3a6a; color:white; cursor:pointer">← BACK</button><h1 id="artTitle" style="margin:20px 0"></h1><div id="artContent" style="color:#c5c5d0; line-height:1.8; white-space:pre-wrap"></div></div></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import { getFirestore, collection, getDocs, addDoc, query, orderBy, limit, doc, updateDoc } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+const firebaseConfig = { apiKey: "AIzaSyChCJxtVlunBF8y6ZJtNFAR_tNlSt6-0Lo", authDomain: "topper-ki-tayari.firebaseapp.com", projectId: "topper-ki-tayari", storageBucket: "topper-ki-tayari.firebasestorage.app", messagingSenderId: "1011695141399", appId: "1:1011695141399:web:1049d00fbafd5714b6d252" };
+const app = initializeApp(firebaseConfig); const db = getFirestore(app); const auth = getAuth(app); const provider = new GoogleAuthProvider();
+let allData=[], currentMock=null, answers={}, timerInterval=null, currentUser=null, currentClassFilter=null, currentTypeFilter="all";
+
+// LIVE TRACKER
+try{
+  let vid = localStorage.getItem('tkt_id') || 'v_'+Math.random().toString(36).slice(2,9);
+  localStorage.setItem('tkt_id', vid);
+  await addDoc(collection(db, "online_users"), {visitorId: vid, lastSeen: new Date()});
+  setInterval(async()=>{ try{ await addDoc(collection(db, "online_users"), {visitorId: localStorage.getItem('tkt_id'), lastSeen: new Date()}); }catch(e){} }, 60000);
+}catch(e){}
+
+window.switchTab=function(tab){
+  document.querySelectorAll('.menu-item').forEach(m=>m.classList.remove('active'));
+  document.getElementById('menu-'+tab).classList.add('active');
+  document.querySelectorAll('#section-home, #section-study, #section-leaderboard').forEach(s=>s.classList.add('hidden'));
+  document.getElementById('section-'+tab).classList.remove('hidden');
+  if(tab==='leaderboard') loadLeaderboard();
+  if(tab==='study'){
+    document.getElementById('classChooser').style.display='block';
+    document.getElementById('classContentArea').style.display='none';
+    currentClassFilter=null;
+    renderGrid(allData);
+  }
+  document.getElementById('mainWrap').scrollTo({top:0, behavior:'smooth'});
+}
+window.chooseClass=function(cls){ currentClassFilter=cls; document.getElementById('classChooser').style.display='none'; document.getElementById('classContentArea').style.display='block'; document.getElementById('selectedClassLabel2').innerText='Class '+cls; currentTypeFilter='all'; applyFilters(); }
+window.backToClassChooser=function(){ document.getElementById('classChooser').style.display='block'; document.getElementById('classContentArea').style.display='none'; currentClassFilter=null; }
+window.filterContent=function(type){ currentTypeFilter=type; applyFilters(); }
+function applyFilters(){
+  let filtered=[...allData];
+  if(currentClassFilter){ filtered=filtered.filter(d=> (d.class||'9').toString()===currentClassFilter); }
+  if(currentTypeFilter!=='all'){ filtered=filtered.filter(d=>d.type===currentTypeFilter); }
+  if(filtered.length===0){ document.getElementById('contentGrid').innerHTML=`<p style='color:#8a8aa3; padding:20px'>No content for Class ${currentClassFilter} yet.</p>`; return; }
+  renderGrid(filtered);
+}
+
+// STUDENT DETAILS FUNCTIONS - NEW
+window.openStudentForm=async function(){
+  document.getElementById('studentModal').style.display='flex';
+  if(currentUser){
+    try{
+      const snap=await getDocs(collection(db, "student_profiles"));
+      snap.forEach(d=>{
+        if(d.data().userId===currentUser.uid){
+          let s=d.data();
+          document.getElementById('st_name').value=s.name||'';
+          document.getElementById('st_class').value=s.class||'9';
+          document.getElementById('st_school').value=s.school||'';
+          document.getElementById('st_phone').value=s.phone||'';
+          document.getElementById('st_goal').value=s.goal||'';
+        }
+      });
+    }catch(e){}
+  }
+}
+window.closeStudentForm=()=>{ document.getElementById('studentModal').style.display='none'; }
+window.saveStudentDetails=async function(){
+  let name=document.getElementById('st_name').value.trim();
+  let sClass=document.getElementById('st_class').value;
+  let school=document.getElementById('st_school').value.trim();
+  let phone=document.getElementById('st_phone').value.trim();
+  let goal=document.getElementById('st_goal').value.trim();
+  if(!name){ document.getElementById('st_msg').innerText="❌ Name required"; return; }
+  if(!currentUser){ document.getElementById('st_msg').innerText="❌ Please LOGIN first"; return; }
+  document.getElementById('st_msg').innerText="⏳ Saving...";
+  try{
+    let existingId=null;
+    const snap=await getDocs(collection(db, "student_profiles"));
+    snap.forEach(d=>{ if(d.data().userId===currentUser.uid) existingId=d.id; });
+    let data={ userId: currentUser.uid, email: currentUser.email, name, class: sClass, school, phone, goal, updatedAt: new Date() };
+    if(existingId){ await updateDoc(doc(db, "student_profiles", existingId), data); }
+    else { await addDoc(collection(db, "student_profiles"), {...data, createdAt: new Date()}); }
+      document.getElementById('userName').innerText=name;
+    document.getElementById('userEmail').innerText="Edit profile ✏️";
+    document.getElementById('userClassLabel').innerText=`Class ${sClass} • ${school}`;
+    document.getElementById('avatarLetter').innerText=getInitials(name);
+    localStorage.setItem('selectedClass', sClass);
+    setTimeout(closeStudentForm, 800);
+  }catch(e){ document.getElementById('st_msg').innerText="❌ "+e.message; }
+}
+function getInitials(name){
+  if(!name) return "G";
+  let parts = name.trim().split(" ");
+  if(parts.length >= 2){
+    return (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
+  }
+  return name.substring(0,2).toUpperCase();
+}
+
+async function loadStudentProfile(){
+  if(!currentUser) return;
+  try{
+    const snap=await getDocs(collection(db, "student_profiles"));
+    snap.forEach(d=>{
+      if(d.data().userId===currentUser.uid){
+        let s=d.data();
+        document.getElementById('userName').innerText=s.name;
+        document.getElementById('userEmail').innerText="Edit profile ✏️";
+        document.getElementById('userClassLabel').innerText=`Class ${s.class} • ${s.school||''}`;
+        document.getElementById('avatarLetter').innerText=getInitials(s.name);
+      }
+    });
+  }catch(e){}
+}
+
+// BAN CHECK SYSTEM
+async function checkIfBanned(user){
+  try{
+    const snap=await getDocs(collection(db, "student_profiles"));
+    let isBanned = false;
+    let banReason = "";
+    snap.forEach(d=>{
+      let data = d.data();
+      if((data.userId === user.uid || data.email === user.email) && data.banned === true){
+        isBanned = true;
+        banReason = data.bannedReason || "No reason given";
+      }
+    });
+    // Also check banned_users collection by email
+    const banSnap = await getDocs(collection(db, "banned_users"));
+    banSnap.forEach(d=>{
+      if(d.data().email === user.email || d.data().userId === user.uid){
+        isBanned = true;
+        banReason = d.data().reason || banReason;
+      }
+    });
+    if(isBanned){
+      document.body.innerHTML = `
+        <div style="min-height:100vh; background:#0a0a14; display:flex; align-items:center; justify-content:center; padding:20px; font-family:Space Grotesk">
+          <div style="max-width:400px; width:100%; background:#15152b; border:1px solid #ff323455; border-radius:20px; padding:30px; text-align:center">
+            <div style="width:60px; height:60px; background:#ff323215; border:1px solid #ff323455; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 16px; font-size:30px">🚫</div>
+            <h2 style="color:#ff6b6b; margin-bottom:10px">YOU ARE BANNED</h2>
+            <p style="color:#8a8aa3; font-size:13px; margin-bottom:8px">Your account <b style="color:white">${user.email}</b> has been banned by admin.</p>
+            <p style="color:#ffcc00; font-size:12px; background:#ffcc0015; border:1px solid #ffcc0033; padding:8px; border-radius:10px; margin:12px 0">Reason: ${banReason}</p>
+            <p style="color:#6a6a8a; font-size:11px; margin-top:16px">Contact admin: edit68ms@gmail.com if you think this is a mistake.</p>
+            <button onclick="logoutBanned()" style="margin-top:20px; width:100%; padding:12px; border-radius:12px; border:none; background:#232345; color:white; cursor:pointer; font-weight:700">LOGOUT</button>
+          </div>
+        </div>`;
+      return true;
+    }
+  }catch(e){ console.log("ban check error", e); }
+  return false;
+}
+window.logoutBanned = async()=>{ await signOut(auth); location.reload(); }
+
+onAuthStateChanged(auth, async (user)=>{
+  const btn=document.getElementById('navLoginBtn');
+  if(user){
+    // FIRST CHECK IF BANNED
+    let banned = await checkIfBanned(user);
+    if(banned) return;
+
+    currentUser=user; btn.innerHTML="<span>LOGOUT</span>"; btn.classList.add('logged'); btn.onclick=async()=>{ await signOut(auth); location.reload(); };
+    document.getElementById('welcomeName').innerText=user.displayName || user.email.split('@')[0];
+    document.getElementById('onlineDot').style.background="#00ff88";
+    loadXP(); loadStudentProfile();
+  } else {
+    currentUser=null; btn.innerHTML="<span>LOGIN</span>"; btn.classList.remove('logged'); btn.onclick=()=>openLogin();
+    document.getElementById('userName').innerText="Guest User"; document.getElementById('userEmail').innerText="Click to add details ✏️"; document.getElementById('userClassLabel').innerText=""; document.getElementById('avatarLetter').innerText="G";
+  }
+});
+window.openLogin=()=>{ document.getElementById('loginModal').style.display='flex'; }
+window.closeLogin=()=>{ document.getElementById('loginModal').style.display='none'; }
+window.googleLogin=async()=>{ try{ await signInWithPopup(auth, provider); closeLogin(); }catch(e){ document.getElementById('loginMsg').innerText=e.message; } }
+window.emailLogin=async()=>{ let email=document.getElementById('email').value, pass=document.getElementById('password').value; if(!email||!pass){ document.getElementById('loginMsg').innerText="Fill email & password"; return; } try{ await signInWithEmailAndPassword(auth,email,pass); closeLogin(); }catch(e){ try{ await createUserWithEmailAndPassword(auth,email,pass); closeLogin(); }catch(er){ document.getElementById('loginMsg').innerText=er.message; } } }
+async function loadXP(){ if(!currentUser) return; const snap=await getDocs(collection(db, "results")); let xp=0; snap.forEach(d=>{ if(d.data().userId===currentUser.uid) xp+=d.data().score*10; }); document.getElementById('statXP').innerText=xp; }
+async function loadData(){ const snap = await getDocs(collection(db, "contents")); allData=[]; snap.forEach(doc=>{ allData.push({id:doc.id,...doc.data()}) }); allData.reverse(); document.getElementById('statChapters').innerText=allData.length; document.getElementById('statCards').innerText=allData.reduce((a,b)=>a+(b.questions?.length||1),0); renderGrid(allData); }
+window.renderGrid=function(data){ const grid=document.getElementById('contentGrid'); if(data.length===0){ grid.innerHTML="<p style='color:#6a6a8a; padding:20px'>No content yet.</p>"; return; } grid.innerHTML=data.map(item=>`<div class="card" onclick="openContent('${item.id}')"><div class="card-thumb" style="background-image:url('${item.thumb || 'https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=600'}')"></div><div class="card-body"><div class="card-type">${item.type.toUpperCase()} • CLASS ${item.class||'9'}</div><div class="card-title">${item.title}</div><div style="display:flex; justify-content:space-between; font-size:12px; color:#6a6a8a"><span>${item.questions? item.questions.length+' Qs • '+item.time+' min' : 'READ'}</span><span class="badge-start">${item.type==='mock'?'START ⚡':'OPEN →'}</span></div></div></div>`).join(''); }
+window.openContent=function(id){ const item=allData.find(d=>d.id===id); if(item.type==='article'||item.type==='longqa'){ document.getElementById('artTitle').innerText=item.title; document.getElementById('artContent').innerText=item.content; document.getElementById('articleView').style.display='block'; } else { currentMock=item; answers={}; document.getElementById('mockTitle').innerText=item.title; document.getElementById('mockQuestions').innerHTML=item.questions.map((q,i)=>`<div class="q-card"><h4 style="color:#00f2ff; font-size:12px">Q_${i+1}</h4><p style="margin:10px 0; font-weight:600">${q.question}</p><button class="opt" id="q${i}_A" onclick="selectOpt(${i},'A')">${q.A}</button><button class="opt" id="q${i}_B" onclick="selectOpt(${i},'B')">${q.B}</button><button class="opt" id="q${i}_C" onclick="selectOpt(${i},'C')">${q.C}</button><button class="opt" id="q${i}_D" onclick="selectOpt(${i},'D')">${q.D}</button></div>`).join(''); document.getElementById('resultBox').style.display='none'; document.getElementById('mockView').style.display='block'; startTimer(item.time); } }
+window.selectOpt=function(qIndex, opt){ answers[qIndex]=opt; document.querySelectorAll(`#q${qIndex}_A, #q${qIndex}_B, #q${qIndex}_C, #q${qIndex}_D`).forEach(el=>el.classList.remove('selected')); document.getElementById(`q${qIndex}_${opt}`).classList.add('selected'); }
+function startTimer(min){ let time=min*60; clearInterval(timerInterval); timerInterval=setInterval(()=>{ let m=Math.floor(time/60), s=time%60; document.getElementById('mockTimer').innerText=`⏱ TIME LEFT: ${m}:${s<10?'0'+s:s}`; time--; if(time<0){ clearInterval(timerInterval); submitMock(); } },1000); }
+window.submitMock=async function(){ clearInterval(timerInterval); let score=0; currentMock.questions.forEach((q,i)=>{ if(answers[i]===q.ans) score++; }); let html=`<h2 style="color:#00f2ff; font-size:32px">${score}/${currentMock.questions.length}</h2><p style="color:#8a8aa3; margin-top:8px">Your Score</p>`; if(currentUser){ try{ await addDoc(collection(db, "results"), {userId: currentUser.uid, email: currentUser.email, testId: currentMock.id, testTitle: currentMock.title, score: score, total: currentMock.questions.length, date: new Date() }); html+=`<p style="margin-top:12px; color:#00ff88">✅ Saved! +${score*10} XP</p>`; loadXP(); }catch(e){ html+=`<p style="color:#ff6b6b">${e.message}</p>`; } } else { html+=`<p style="margin-top:12px; color:#8a8aa3">Login to save XP</p>`; } document.getElementById('resultBox').innerHTML=html; document.getElementById('resultBox').style.display='block'; }
+window.closeMock=function(){ document.getElementById('mockView').style.display='none'; clearInterval(timerInterval); }
+const STREAK_KEY="tkt_weekly_streak";
+function getDateStr(d){ return d.toISOString().split('T')[0]; }
+function getMonday(d){ const date=new Date(d); const day=date.getDay(); const diff=date.getDate()-day+(day==0?-6:1); return new Date(date.setDate(diff)); }
+function saveTodayVisit(){ let visits=JSON.parse(localStorage.getItem(STREAK_KEY)||"[]"); const today=getDateStr(new Date()); if(!visits.includes(today)){ visits.push(today); localStorage.setItem(STREAK_KEY, JSON.stringify(visits)); } }
+function renderWeeklyStreak(){ saveTodayVisit(); let visits=JSON.parse(localStorage.getItem(STREAK_KEY)||"[]"); let visitsSet=new Set(visits); const weekGrid=document.getElementById('weekGrid'); weekGrid.innerHTML=""; const labels=['M','T','W','T','F','S','S']; const monday=getMonday(new Date()); let completed=0; for(let i=0;i<7;i++){ let date=new Date(monday); date.setDate(monday.getDate()+i); let dateStr=getDateStr(date); let isDone=visitsSet.has(dateStr); if(isDone) completed++; let div=document.createElement('div'); div.className='day-box'+(isDone?' done':''); div.innerHTML=isDone?'🔥':labels[i]; weekGrid.appendChild(div); } document.getElementById('weeklyText').innerText=completed+" of 7 days completed"; }
+renderWeeklyStreak();
+async function loadLeaderboard(){ try{ const snap=await getDocs(query(collection(db, "results"), orderBy("score", "desc"), limit(15))); let html=""; let rank=1; snap.forEach(d=>{ let r=d.data(); let medal=rank===1?'🥇':rank===2?'🥈':rank===3?'🥉':`#${rank}`; html+=`<div style="display:flex; justify-content:space-between; padding:12px; border-bottom:1px solid #1a1a30"><span>${medal} ${r.email.split('@')[0]} • ${r.testTitle}</span><span style="color:#00f2ff; font-weight:800">${r.score}/${r.total}</span></div>`; rank++; }); document.getElementById('leaderboardList').innerHTML=html||"No scores yet"; }catch(e){ document.getElementById('leaderboardList').innerHTML="No data yet"; } }
+window.loadLeaderboard=loadLeaderboard;
+loadData();
+</script>
+</body>
+</html>
